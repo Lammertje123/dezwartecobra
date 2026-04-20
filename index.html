@@ -39,20 +39,12 @@ h1{
   margin:10px 0;
 }
 
-.status{
-  font-size:13px;
-  margin:10px 0;
-}
-
+.status{ font-size:13px; margin:10px 0; }
 .live{ color:#00ff66; }
 .offline{ color:#ff4444; }
 .warn{ color:#ffaa00; }
 
-.now{
-  font-size:12px;
-  opacity:0.85;
-  margin-top:6px;
-}
+.now{ font-size:12px; opacity:0.85; margin-top:6px; }
 
 button{
   margin-top:12px;
@@ -119,9 +111,7 @@ input[type=range]{
   <div class="now" id="now">🎵 Connecting stream...</div>
   <div class="badge" id="net">📡 SYSTEM READY</div>
 
-  <audio id="radio" preload="none">
-    <source src="http://86.85.200.210:8000/stream">
-  </audio>
+  <audio id="radio" preload="none"></audio>
 
   <button onclick="toggle()">▶ PLAY / STOP</button>
 
@@ -154,7 +144,7 @@ let watchdog;
 // volume
 vol.addEventListener("input", ()=> audio.volume = vol.value);
 
-// MAIN TOGGLE
+// toggle
 function toggle(){
   if(!playing){
     start();
@@ -170,9 +160,10 @@ function start(){
   status.className = "status warn";
   status.innerHTML = "🟡 CONNECTING";
 
-  audio.src = "http://86.85.200.210:8000/stream";
+  audio.src = "https://stream.dezwartecobra.nl/stream";
 
   audio.play().then(()=>{
+
     playing = true;
 
     status.className = "status live";
@@ -184,13 +175,15 @@ function start(){
     fetchNowPlaying();
 
   }).catch(()=>{
+
     status.className = "status offline";
     status.innerHTML = "❌ STREAM ERROR";
     net.innerHTML = "📡 CONNECTION FAILED";
+
   });
 }
 
-// STOP STREAM
+// STOP
 function stop(){
   audio.pause();
   playing = false;
@@ -203,7 +196,7 @@ function stop(){
   clearInterval(watchdog);
 }
 
-// WATCHDOG
+// watchdog
 function startWatchdog(){
   clearInterval(watchdog);
 
@@ -215,7 +208,7 @@ function startWatchdog(){
   }, 4000);
 }
 
-// NOW PLAYING
+// metadata
 async function fetchNowPlaying(){
   try{
     const res = await fetch("http://86.85.200.210:8000/status-json.xsl");
@@ -240,5 +233,4 @@ audio.volume = 0.8;
 
 </body>
 </html>
-
 
